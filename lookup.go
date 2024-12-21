@@ -10,9 +10,7 @@ import (
 
 	"github.com/Loyalsoldier/geoip/lib"
 	"github.com/Loyalsoldier/geoip/plugin/maxmind"
-	"github.com/Loyalsoldier/geoip/plugin/mihomo"
 	"github.com/Loyalsoldier/geoip/plugin/plaintext"
-	"github.com/Loyalsoldier/geoip/plugin/singbox"
 	"github.com/Loyalsoldier/geoip/plugin/special"
 	"github.com/Loyalsoldier/geoip/plugin/v2ray"
 	"github.com/spf13/cobra"
@@ -184,26 +182,6 @@ func getInputForLookup(format, name, uri, dir string) lib.InputConverter {
 			Action:      lib.ActionAdd,
 			Description: maxmind.DescIPInfoCountryMMDBIn,
 			URI:         uri,
-		}
-
-	case strings.ToLower(mihomo.TypeMRSIn):
-		input = &mihomo.MRSIn{
-			Type:        mihomo.TypeMRSIn,
-			Action:      lib.ActionAdd,
-			Description: mihomo.DescMRSIn,
-			Name:        name,
-			URI:         uri,
-			InputDir:    dir,
-		}
-
-	case strings.ToLower(singbox.TypeSRSIn):
-		input = &singbox.SRSIn{
-			Type:        singbox.TypeSRSIn,
-			Action:      lib.ActionAdd,
-			Description: singbox.DescSRSIn,
-			Name:        name,
-			URI:         uri,
-			InputDir:    dir,
 		}
 
 	case strings.ToLower(v2ray.TypeGeoIPdatIn):
