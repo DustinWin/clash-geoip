@@ -95,10 +95,10 @@ jobs:
 
       - name: Move files
         run: |
-          mkdir -p ./clash/ ./sing-box/
+          mkdir -p ./mihomo/ ./sing-box/
           cd ./output/ || exit 1
           for file in $(ls *.dat *.metadb); do
-            install -Dp "./${file}" ../clash/
+            install -Dp "./${file}" ../mihomo/
           done
           for file in $(ls *.db); do
             install -Dp "./${file}" ../sing-box/
@@ -107,7 +107,7 @@ jobs:
       - name: Move and generate files to branchs
         run: |
           mkdir -p ./tmp/
-          mv -f ./output/Country*.mmdb ./clash/
+          mv -f ./output/Country*.mmdb ./mihomo/
           curl -sSL ${cn_asn} | grep -v '#' | sed 's/,no-resolve$//' > ./tmp/cn.list
           for file in $(ls ./output/clash/classical/ | sed 's/\..*//'); do
             grep -v 'payload:' "./output/clash/classical/${file}.txt" | sed 's/^  - //' >> "./tmp/${file}.list"
@@ -124,7 +124,7 @@ jobs:
           tag: ips
           overwrite: true
           body: |
-            Clash rule-set 规则集文件，规则类型包含 `IP-ASN`、`IP-CIDR` 和 `IP-CIDR6`
+            [mihomo](https://github.com/MetaCubeX/mihomo) rule-set 规则集文件，规则类型包含 `IP-ASN`、`IP-CIDR` 和 `IP-CIDR6`
             [ShellCrash](https://github.com/juewuy/ShellCrash) 中 CN_IP 绕过内核所需文件
             文件更新于 ${{ env.update_version }}
           file_glob: true
@@ -141,18 +141,18 @@ jobs:
           git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git push -f -u origin ips
 
-      - name: Release and upload `clash` assets
+      - name: Release and upload `mihomo` assets
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          release_name: clash
-          tag: clash
+          release_name: mihomo
+          tag: mihomo
           overwrite: true
           body: |
-            Clash 和 [mihomo](https://github.com/MetaCubeX/mihomo) geodata 文件
+            [mihomo](https://github.com/MetaCubeX/mihomo) geodata 文件
             geodata 文件更新于 ${{ env.update_version }}
           file_glob: true
-          file: ./clash/*
+          file: ./mihomo/*
 
       - name: Release and upload `sing-box` assets
         uses: svenstaro/upload-release-action@v2
@@ -173,9 +173,9 @@ jobs:
           for file in $(ls); do
             curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@ips/${file}"
           done
-          cd ../clash/ || exit 1
+          cd ../mihomo/ || exit 1
           for file in $(ls); do
-            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@clash/${file}"
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@mihomo/${file}"
           done
           cd ../sing-box/ || exit 1
           for file in $(ls); do
